@@ -1,7 +1,10 @@
 const appJson = 'application/json';
+const softeo = 'https://softeo-backend-humberto.herokuapp.com';
+const localhost = 'http://localhost:3001';
+const request = softeo || localhost;
 
 export const fetchApi = async (email: string, password: string) => {
-  const fecthLogin = fetch('https://softeo-backend-humberto.herokuapp.com/login', {
+  const fecthLogin = fetch(`${request}/login`, {
     method: 'POST',
     headers: {
       Accept: appJson,
@@ -17,7 +20,7 @@ export const fetchApi = async (email: string, password: string) => {
 };
 
 export const fetchApiRegister = async (email: string, name: string, password: string) => {
-  const fetchRegister = fetch('https://softeo-backend-humberto.herokuapp.com/dentist', {
+  const fetchRegister = fetch(`${request}/dentist`, {
     method: 'POST',
     headers: {
       Accept: appJson,
@@ -30,5 +33,18 @@ export const fetchApiRegister = async (email: string, name: string, password: st
     }),
   });
   const response = await fetchRegister;
+  return response;
+};
+
+export const fetchApiShowClientByDentistId = async (token: string) => {
+  const fetchShowClientByDentistId = fetch(`${request}/client/dentist`, {
+    method: 'GET',
+    headers: {
+      Accept: appJson,
+      'Content-Type': appJson,
+      Authorization: token,
+    },
+  });
+  const response = await fetchShowClientByDentistId;
   return response;
 };

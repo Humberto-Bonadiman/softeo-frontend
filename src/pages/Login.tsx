@@ -4,11 +4,10 @@ import { Container, Figure, Form, Button, Alert } from 'react-bootstrap';
 import Logo from '../images/Logo.jpg';
 import { fetchApi } from '../services/fetchApi';
 import { DentistContext } from '../context/DentistContext';
-import { dentistCreatedInterface } from '../interfaces/dentistInterface';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setDentists } = useContext(DentistContext);
+  const { setToken, setDentist } = useContext(DentistContext);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,19 +28,20 @@ const Login = () => {
     const POST = 200;
     if (result.status === POST) {
       const body = await result.json();
-      const { id, email, name }: dentistCreatedInterface = body;
-      setDentists(body);
-      localStorage.setItem('dentist', JSON.stringify({ id, email, name }));
+      console.log(body);
+      setToken(body);
+      setDentist({ email });
+      localStorage.setItem('token', JSON.stringify(body));
       navigate('/clients');
     }
   };
 
   const dentistIsOn = () => {
-    const value = localStorage.getItem('dentist');
+    const value = localStorage.getItem('token');
     if (typeof value === 'string') {
       const parse = JSON.parse(value);
       if (parse) {
-        setDentists(parse);
+        setToken(parse);
       }
     }
   };
@@ -60,7 +60,7 @@ const Login = () => {
       onClose={ () => setError(false) }
       dismissible
     >
-      Incorrect email or password.
+      E-mail ou senha incorretos.
     </Alert>
   );
 
@@ -88,7 +88,7 @@ const Login = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Senha</Form.Label>
           <Form.Control
             type="password"
             placeholder="**********"
@@ -104,7 +104,7 @@ const Login = () => {
           className="mt-3"
           onClick={ handleClick }
         >
-          Login
+          Entrar
         </Button>
         <Button
           variant="outline-primary"
@@ -113,7 +113,7 @@ const Login = () => {
           className="mt-3"
           onClick={ () => { navigate('/register'); } }
         >
-          I still don't have an account
+          Ainda não possuo uma conta
         </Button>
       </Form>
       { error && ALERT }

@@ -44,7 +44,7 @@ const Register = () => {
       onClose={ () => setError(false) }
       dismissible
     >
-      This email is already in use.
+      Este e-mail já está em uso.
     </Alert>
   );
 
@@ -55,7 +55,7 @@ const Register = () => {
         style={ { maxWidth: '500px', minWidth: '300px' } }
       >
         <Form.Group className="mb-3" controlId="formBasicName">
-          <Form.Label>Name</Form.Label>
+          <Form.Label>Nome</Form.Label>
           <Form.Control
             type="text"
             placeholder="Nome completo"
@@ -64,7 +64,7 @@ const Register = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>E-mail</Form.Label>
           <Form.Control
             type="email"
             placeholder="email@trybeer.com.br"
@@ -73,7 +73,7 @@ const Register = () => {
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Senha</Form.Label>
           <Form.Control
             type="password"
             placeholder="**********"
@@ -93,12 +93,12 @@ const Register = () => {
           className="mt-3"
           onClick={ handleClick }
         >
-          Register
+          Registrar
         </Button>
       </Form>
       <p style={ { margin: 'auto', maxWidth: '240px' } }>
-        Already have an account?&nbsp;
-        <a href="/login">Login</a>
+        Já possui uma conta?&nbsp;
+        <a href="/login">Entrar</a>
       </p>
       { error && ALERT }
     </Container>

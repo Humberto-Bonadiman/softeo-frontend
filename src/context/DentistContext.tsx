@@ -1,36 +1,52 @@
 import React, { useState, createContext, ReactNode } from 'react';
+import { IClients } from '../interfaces/clientInterface';
+import { IDentist } from '../interfaces/dentistInterface';
 
 type DentistContextProps = {
   children: ReactNode;
 };
 
-interface IDentist {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-}
-
 type DentistContextType = {
-  dentists: IDentist[];
-  setDentists: React.Dispatch<React.SetStateAction<IDentist[]>>;
+  dentist: IDentist;
+  setDentist: React.Dispatch<React.SetStateAction<IDentist>>;
+  token: string;
+  setToken: React.Dispatch<React.SetStateAction<string>>;
+  clients: IClients[];
+  setClients: React.Dispatch<React.SetStateAction<IClients[]>>;
 };
 
 const initialValue = {
-  dentists: [
-    {
-      id: '',
+  dentist: {
       email: '',
-      name: '',
-      password: ''
-    }
-  ],
-  setDentists: () => [{}]
+  },
+  setDentist: () => {},
+  token: '',
+  setToken: () => {},
+  clients: [{
+    id: '',
+    name: '',
+    treatment: '',
+    date: '',
+    value: '',
+    numberPlots: 0,
+    valuePlots: '',
+    dentistId: '',
+  }],
+  setClients: () => [{}],
 };
 
 export const DentistContext = createContext<DentistContextType>(initialValue);
 
 export const DentistContextProvider = ({ children }: DentistContextProps) => {
-  const [dentists, setDentists] = useState(initialValue.dentists);
-  return <DentistContext.Provider value={{ dentists, setDentists }}>{children}</DentistContext.Provider>;
+  const [dentist, setDentist] = useState(initialValue.dentist);
+  const [token, setToken] = useState(initialValue.token);
+  const [clients, setClients] = useState(initialValue.clients);
+  return <DentistContext.Provider value={{
+    dentist,
+    setDentist,
+    token,
+    setToken,
+    clients,
+    setClients,
+  }}>{children}</DentistContext.Provider>;
 };

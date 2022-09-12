@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, useRoutes, Navigate } from 'react-router-dom';
 import Clients from '../pages/Clients';
+import EditClient from '../pages/EditClient';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 
@@ -9,6 +10,7 @@ const App = () => {
     { path: '/', element: <Navigate to="/login" /> },
     { path: '/login', element: <Login /> },
     { path: '/register', element: <Register /> },
+    { path: '/clients/edit/:id', element: <EditClient /> },
     { path: '/clients', element: <Clients /> }
   ]);
 };
