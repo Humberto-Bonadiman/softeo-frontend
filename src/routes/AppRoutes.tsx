@@ -1,13 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, useRoutes, Navigate } from 'react-router-dom';
+import Clients from '../pages/Clients';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 
 const App = () => {
   return useRoutes([
-    { path: '/', element: <Navigate to="/users/1" /> },
+    { path: '/', element: <Navigate to="/login" /> },
     { path: '/login', element: <Login /> },
-    { path: '/register', element: <Register />}
+    { path: '/register', element: <Register /> },
+    { path: '/clients', element: <Clients /> }
   ]);
 };
 
