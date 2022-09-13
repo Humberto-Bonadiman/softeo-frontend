@@ -8,3 +8,14 @@ export interface IClients {
   valuePlots: string;
   dentistId: string;
 };
+
+export interface clientInterface {
+  name: string,
+  treatment: string,
+  value: number,
+  numberPlots: number
+}
+
+export interface clientWithDateInterface extends clientInterface {
+  date: string
+}

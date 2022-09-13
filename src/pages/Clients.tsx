@@ -12,12 +12,9 @@ const Clients = () => {
     const value = localStorage.getItem('token');
     if (typeof value === 'string') {
       const parse = JSON.parse(value);
-      console.log(parse);
       if (parse) {
         const response = await fetchApiShowClientByDentistId(parse);
-        console.log(response);
         const data = await response.json();
-        console.log(data);
         setAllClients(data);
       }
     }
@@ -27,7 +24,6 @@ const Clients = () => {
     const value = localStorage.getItem('token') || '';
     const result = await fetchApiFindClientById(id, value.substring(1, value.length-1));
     const data = await result.json();
-    console.log(data);
     setOneClient(data);
   };
 

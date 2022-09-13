@@ -1,3 +1,5 @@
+import { clientWithDateInterface } from "../interfaces/clientInterface";
+
 const appJson = 'application/json';
 const softeo = 'https://softeo-backend-humberto.herokuapp.com';
 const localhost = 'http://localhost:3001';
@@ -59,5 +61,23 @@ export const fetchApiFindClientById = async (id: string, token: string) => {
     },
   });
   const response = await fetchFindClientById;
+  return response;
+};
+
+export const fetchApiUpdateClientById = async (
+  id: string,
+  token: string,
+  elementsClient: clientWithDateInterface
+) => {
+  const fetchUpdateClientById = fetch(`${request}/client/${id}`, {
+    method: 'PUT',
+    headers: {
+      Accept: appJson,
+      'Content-Type': appJson,
+      Authorization: token,
+    },
+    body: JSON.stringify(elementsClient),
+  });
+  const response = await fetchUpdateClientById;
   return response;
 };

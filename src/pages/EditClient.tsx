@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from './../components/Header';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { fetchApiFindClientById } from '../services/fetchApi';
+import { Alert, Form } from 'react-bootstrap';
+import { fetchApiUpdateClientById } from '../services/fetchApi';
 import { DentistContext } from '../context/DentistContext';
 
 const EditClient = () => {
@@ -19,10 +19,14 @@ const EditClient = () => {
 
   const handleClick = async (event: { preventDefault: () => void; }) => {
     event.preventDefault();
-    const value = localStorage.getItem('token') || '';
-    console.log(value);
+    const token = localStorage.getItem('token') || '';
+    const value = parseInt(valueTreatment);
     if (typeof id === 'string') {
-      const result = await fetchApiFindClientById(id, value.substring(1, value.length-1));
+      const result = await fetchApiUpdateClientById(
+        id,
+        token.substring(1, token.length-1),
+        { name, treatment, date, value, numberPlots },
+      );
       const ERROR = 401;
       if (result.status === ERROR) {
         setError(true);
@@ -34,6 +38,20 @@ const EditClient = () => {
       }
     }
   };
+
+  const ALERT = (
+    <Alert
+      key="danger"
+      variant="danger"
+      className="container-sm error text-center mt-3 w-50"
+      data-testid="common_edit_client__element-invalid-update"
+      style={ { maxWidth: '400px', minWidth: '300px' } }
+      onClose={ () => setError(false) }
+      dismissible
+    >
+      Algum dado não foi informado ou não está correto.
+    </Alert>
+  );
   
   return (
     <div>
@@ -87,9 +105,10 @@ const EditClient = () => {
         </Form.Group>
 
         <Button variant="primary" type="submit" onClick={ handleClick }>
-          Submit
+          Atualizar dados
         </Button>
       </Form>
+      { error && ALERT }
     </div>
   );
 };

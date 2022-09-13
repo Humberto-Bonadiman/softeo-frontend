@@ -28,7 +28,6 @@ const Login = () => {
     const POST = 200;
     if (result.status === POST) {
       const body = await result.json();
-      console.log(body);
       setToken(body);
       setDentist({ email });
       localStorage.setItem('token', JSON.stringify(body));
