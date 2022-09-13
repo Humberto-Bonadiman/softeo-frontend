@@ -1,12 +1,14 @@
 import { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchApiShowClientByDentistId, fetchApiFindClientById } from '../services/fetchApi';
 import { DentistContext } from '../context/DentistContext';
 import Header from '../components/Header';
 import { VscEdit, VscTrash } from 'react-icons/vsc';
+import '../styles/clients.css';
 
 const Clients = () => {
   const { setAllClients, allClients, setOneClient } = useContext(DentistContext);
+  const navigate = useNavigate();
 
   const getClientsByDentist = async () => {
     const value = localStorage.getItem('token');
@@ -25,6 +27,10 @@ const Clients = () => {
     const result = await fetchApiFindClientById(id, value.substring(1, value.length-1));
     const data = await result.json();
     setOneClient(data);
+  };
+
+  const navigateToCreateUser = () => {
+    navigate('/clients/create');
   };
 
 /*   const deleteClient = (id: string) => {
@@ -47,7 +53,17 @@ const Clients = () => {
   return(
     <div>
       <Header />
-      <h1>Clients</h1>
+      <div className="below-header">
+        <h3 className="h3">Listagem de clientes</h3>
+        <button
+          type="button"
+          className="btn btn-primary"
+          data-testid="redirect-button"
+          onClick={ navigateToCreateUser }
+        >
+          Adicionar novo contato
+        </button>
+      </div>
       <div className="table-responsive">
         <table className="table table-sm table-dark">
           <thead>
