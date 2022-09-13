@@ -81,7 +81,7 @@ const Login = () => {
           <Form.Label>E-mail</Form.Label>
           <Form.Control
             type="email"
-            placeholder="email@trybeer.com.br"
+            placeholder="joao@email.com.br"
             data-testid="common_login__input-email"
             onChange={ ({ target }) => setEmail(target.value) }
           />

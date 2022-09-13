@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Header from './../components/Header';
 import Button from 'react-bootstrap/Button';
 import { Alert, Form } from 'react-bootstrap';
 import { fetchApiCreateClient } from '../services/fetchApi';
-// import { DentistContext } from '../context/DentistContext';
 
 const CreateClient = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
   const [error, setError] = useState(false);
   const [name, setName] = useState('');
   const [treatment, setTreatment] = useState('');
@@ -51,7 +49,6 @@ const CreateClient = () => {
   return (
     <div>
       <Header />
-
       <Form>
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Label>Nome</Form.Label>

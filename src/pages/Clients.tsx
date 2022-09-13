@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchApiShowClientByDentistId, fetchApiFindClientById } from '../services/fetchApi';
+import { confirmAlert } from 'react-confirm-alert'; 
+import { fetchApiShowClientByDentistId, fetchApiFindClientById, fetchApiDeleteClientById } from '../services/fetchApi';
 import { DentistContext } from '../context/DentistContext';
 import Header from '../components/Header';
 import { VscEdit, VscTrash } from 'react-icons/vsc';
@@ -9,22 +10,19 @@ import '../styles/clients.css';
 const Clients = () => {
   const { setAllClients, allClients, setOneClient } = useContext(DentistContext);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token') || '';
 
   const getClientsByDentist = async () => {
-    const value = localStorage.getItem('token');
-    if (typeof value === 'string') {
-      const parse = JSON.parse(value);
-      if (parse) {
-        const response = await fetchApiShowClientByDentistId(parse);
-        const data = await response.json();
-        setAllClients(data);
-      }
+    const parse = JSON.parse(token);
+    if (parse) {
+      const response = await fetchApiShowClientByDentistId(parse);
+      const data = await response.json();
+      setAllClients(data);
     }
   };
 
   const editUser = async (id: string) => {
-    const value = localStorage.getItem('token') || '';
-    const result = await fetchApiFindClientById(id, value.substring(1, value.length-1));
+    const result = await fetchApiFindClientById(id, token.substring(1, token.length-1));
     const data = await result.json();
     setOneClient(data);
   };
@@ -33,17 +31,49 @@ const Clients = () => {
     navigate('/clients/create');
   };
 
-/*   const deleteClient = (id: string) => {
-    removeExpenses(id);
-  } */
-
   const linkClient = (id: string) => {
     return (
       <Link to={ `/clients/edit/${id}` } onClick={ () => editUser(id)}>
         <VscEdit className="btn-image" color="white" />
       </Link>
     );
-  }
+  };
+
+  const submit = (id: string, token: string) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='custom-ui'>
+            <h3>Confirme para enviar a requisição</h3>
+            <p>Você tem certeza que deseja deletar os dados do cliente?</p>
+            <button className="btn btn-primary" onClick={ onClose }>Não</button>
+            <button
+              className="btn btn-primary"
+              onClick={ async () => {
+                await fetchApiDeleteClientById(
+                  id,
+                  token.substring(1, token.length - 1)
+                );
+                getClientsByDentist();
+                onClose();
+              }}
+            >
+              Sim
+            </button>
+          </div>
+        );
+      }
+    });
+  };
+
+  const deleteButton = (id: string, token: string) => {
+    return (
+      // eslint-disable-next-line jsx-a11y/anchor-is-valid
+      <a>
+        <VscTrash className="btn-image" color="white" onClick={ () => submit(id, token) } />
+      </a>
+    );
+  };
 
   useEffect(() => {
     getClientsByDentist();
@@ -89,7 +119,7 @@ const Clients = () => {
               <td>{numberPlots}</td>
               <td>{valuePlots}</td>
               <td>
-                {linkClient(id)} / <VscTrash className="btn-image" color="white" />
+                {linkClient(id)} / {deleteButton(id, token)}
               </td>
             </tr>
           ))}

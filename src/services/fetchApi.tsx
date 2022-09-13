@@ -98,3 +98,16 @@ export const fetchApiCreateClient = async (
   const response = await fetchUpdateClientById;
   return response;
 };
+
+export const fetchApiDeleteClientById = async (id: string, token: string) => {
+  const fetchDeleteClientById = fetch(`${request}/client/${id}`, {
+    method: 'DELETE',
+    headers: {
+      Accept: appJson,
+      'Content-Type': appJson,
+      Authorization: token,
+    },
+  });
+  const response = await fetchDeleteClientById;
+  return response;
+};
