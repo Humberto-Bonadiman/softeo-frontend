@@ -6,10 +6,19 @@ import { DentistContext } from '../context/DentistContext';
 const Header = () => {
   const { dentist } = useContext(DentistContext);
   const navigate = useNavigate();
+  const email = localStorage.getItem('email') || '';
+
+  const dentistEmail = () => {
+    if (dentist.email === '') {
+      const parse = JSON.parse(email) || '';
+      return parse;
+    }
+    return dentist.email;
+  }
 
   const logout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('dentist');
+    localStorage.removeItem('email');
     navigate('/login');
   };
 
@@ -22,7 +31,7 @@ const Header = () => {
             <Nav.Link
                 data-testid="customer_products__element-navbar-user-full-name"
               >
-                { dentist.email }
+                { dentistEmail() }
               </Nav.Link>
           </Nav>
           <Nav>

@@ -31,6 +31,7 @@ const Login = () => {
       setToken(body);
       setDentist({ email });
       localStorage.setItem('token', JSON.stringify(body));
+      localStorage.setItem('email', JSON.stringify(email));
       navigate('/clients');
     }
   };

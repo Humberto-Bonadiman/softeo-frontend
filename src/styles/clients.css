@@ -1,6 +1,38 @@
-.below-header{
+.below-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 20px;
+  padding: 15px;
+}
+
+.filter-date {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  padding: 15px;
+}
+
+.button-filter {
+  height: 50px;
+}
+
+@media screen and (max-width: 600px) {
+  .below-header {
+    flex-direction: column;
+    justify-content: center;
+    margin: 5px;
+    padding: 5px 0px;
+  }
+
+  .h3 {
+    text-align: center;
+  }
+
+  .filter-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    margin: 5px;
+    padding: 5px 0px;
+  }
 }

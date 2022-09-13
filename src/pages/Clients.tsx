@@ -1,16 +1,18 @@
-import { useContext, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { confirmAlert } from 'react-confirm-alert'; 
-import { fetchApiShowClientByDentistId, fetchApiFindClientById, fetchApiDeleteClientById } from '../services/fetchApi';
+import { useContext, useEffect, useState } from 'react';
+import { fetchApiShowClientByDentistId } from '../services/fetchApi';
 import { DentistContext } from '../context/DentistContext';
 import Header from '../components/Header';
-import { VscEdit, VscTrash } from 'react-icons/vsc';
+import { Form, Button } from 'react-bootstrap';
 import '../styles/clients.css';
+import BelowHeader from '../components/BelowHeader';
+import TableClients from '../components/TableClients';
 
 const Clients = () => {
-  const { setAllClients, allClients, setOneClient } = useContext(DentistContext);
-  const navigate = useNavigate();
+  const { setAllClients, allClients } = useContext(DentistContext);
   const token = localStorage.getItem('token') || '';
+  const [initialDate, setInitialDate] = useState('');
+  const [finalDate, setFinalDate] = useState('');
+  const [show, setShow] = useState(false);
 
   const getClientsByDentist = async () => {
     const parse = JSON.parse(token);
@@ -18,114 +20,122 @@ const Clients = () => {
       const response = await fetchApiShowClientByDentistId(parse);
       const data = await response.json();
       setAllClients(data);
-    }
+    };
   };
 
-  const editUser = async (id: string) => {
-    const result = await fetchApiFindClientById(id, token.substring(1, token.length-1));
-    const data = await result.json();
-    setOneClient(data);
+  const totalValue = allClients.map((item) => parseInt(item.value))
+    .reduce((prev, curr) => prev + curr, 0);
+
+  const valueByMonth = allClients.map((item) => parseInt(item.valuePlots))
+    .reduce((prev, curr) => prev + curr, 0);
+
+  function converteData(DataDDMMYY: string) {
+    const dataSubstring = DataDDMMYY.substring(0, 10);
+    const dataSplit = dataSubstring.split("/");
+    const novaData = new Date(parseInt(dataSplit[2], 10),
+      parseInt(dataSplit[1], 10) - 1,
+      parseInt(dataSplit[0], 10));
+    return novaData;
   };
 
-  const navigateToCreateUser = () => {
-    navigate('/clients/create');
+  function formatDate (input: string) {
+    const theDate = input;
+    const day = theDate.substring(8, 10);
+    const month = theDate.substring(5, 7);
+    const year = theDate.substring(0, 4);
+    return `${day}/${month}/${year}`;
   };
 
-  const linkClient = (id: string) => {
-    return (
-      <Link to={ `/clients/edit/${id}` } onClick={ () => editUser(id)}>
-        <VscEdit className="btn-image" color="white" />
-      </Link>
-    );
-  };
-
-  const submit = (id: string, token: string) => {
-    confirmAlert({
-      customUI: ({ onClose }) => {
-        return (
-          <div className='custom-ui'>
-            <h3>Confirme para enviar a requisição</h3>
-            <p>Você tem certeza que deseja deletar os dados do cliente?</p>
-            <button className="btn btn-primary" onClick={ onClose }>Não</button>
-            <button
-              className="btn btn-primary"
-              onClick={ async () => {
-                await fetchApiDeleteClientById(
-                  id,
-                  token.substring(1, token.length - 1)
-                );
-                getClientsByDentist();
-                onClose();
-              }}
-            >
-              Sim
-            </button>
-          </div>
-        );
-      }
+  const filterClients = () => {
+    const filteredClients = allClients.filter(result => {
+      const init = converteData(formatDate(initialDate));
+      const final = converteData(formatDate(finalDate));
+      const resultado = converteData(result.date) >= init && converteData(result.date) <= final;
+      return resultado;
     });
-  };
+    return filteredClients;
+  }
 
-  const deleteButton = (id: string, token: string) => {
-    return (
-      // eslint-disable-next-line jsx-a11y/anchor-is-valid
-      <a>
-        <VscTrash className="btn-image" color="white" onClick={ () => submit(id, token) } />
-      </a>
-    );
-  };
+  const getMonthsPeriod = () => {
+    const first = parseInt(initialDate.substring(5, 7));
+    const second = parseInt(finalDate.substring(5, 7));
+    let period;
+    if (first > second) {
+      period = (first + second) - first;
+      return valueByMonth * period;
+    }
+    period = second - first;
+    return valueByMonth * period;
+  }
+
+  const BUTTON = (
+    <Button
+      onClick={ () => {
+        getClientsByDentist();
+        setShow(false);
+      } }
+      variant="primary"
+      type="button"
+      className="button-filter"
+    >
+      Mostrar todos os clientes
+    </Button>
+  );
+
+  const VALUE_MONTH = (
+    <p>Valor a receber por mês: {valueByMonth}</p>
+  );
+
+  const VALUE_PERIOD = (
+    <p>Valor a receber no período: {getMonthsPeriod()}</p>
+  )
 
   useEffect(() => {
     getClientsByDentist();
+    filterClients();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return(
     <div>
       <Header />
-      <div className="below-header">
-        <h3 className="h3">Listagem de clientes</h3>
-        <button
-          type="button"
-          className="btn btn-primary"
-          data-testid="redirect-button"
-          onClick={ navigateToCreateUser }
-        >
-          Adicionar novo contato
-        </button>
+      <BelowHeader />
+      <div>
+        <Form className="filter-date">
+          <Form.Group className="mb-3" controlId="formBasicDate">
+            <Form.Label>Data inicial</Form.Label>
+            <Form.Control
+              type="date"
+              value={ initialDate }
+              onChange={ ({ target }) => setInitialDate(target.value) }
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicDate">
+            <Form.Label>Data final</Form.Label>
+            <Form.Control
+              type="date"
+              value={ finalDate }
+              onChange={ ({ target }) => setFinalDate(target.value) }
+            />
+          </Form.Group>
+          <Button
+            onClick={ () => {
+              setAllClients(filterClients());
+              setShow(true);
+            } }
+            variant="primary"
+            type="button"
+            className="button-filter"
+          >
+            Filtar por data
+          </Button>
+          { show && BUTTON }
+        </Form>
       </div>
-      <div className="table-responsive">
-        <table className="table table-sm table-dark">
-          <thead>
-            <tr>
-              <th scope="col" data-testid="table-header-id">Id</th>
-              <th scope="col" data-testid="table-header-name">Nome</th>
-              <th scope="col" data-testid="table-header-email">Tratamento</th>
-              <th scope="col" data-testid="table-header-date">Data</th>
-              <th scope="col" data-testid="table-header-date">Valor</th>
-              <th scope="col" data-testid="table-header-date">Número de parcelas</th>
-              <th scope="col" data-testid="table-header-date">Valor das parcelas</th>
-              <th scope="col" data-testid="table-header-edit">Editar/Deletar</th>
-            </tr>
-          </thead>
-          <tbody>
-          {allClients.map(({ id, name, treatment, date, value, numberPlots, valuePlots }, index) => (
-            <tr key={index}>
-              <th>{id}</th>
-              <td>{name}</td>
-              <td>{treatment}</td>
-              <td>{date}</td>
-              <td>{value}</td>
-              <td>{numberPlots}</td>
-              <td>{valuePlots}</td>
-              <td>
-                {linkClient(id)} / {deleteButton(id, token)}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-        </table>
-      </div>
+      <TableClients />
+      <p>Valor total: {totalValue}</p>
+      { show && VALUE_MONTH }
+      { show && VALUE_PERIOD }
     </div>
   );
 };

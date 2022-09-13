@@ -3,7 +3,7 @@ import { clientInterface, clientWithDateInterface } from "../interfaces/clientIn
 const appJson = 'application/json';
 const softeo = 'https://softeo-backend-humberto.herokuapp.com';
 const localhost = 'http://localhost:3001';
-const request = softeo || localhost;
+const request = localhost || softeo;
 
 export const fetchApi = async (email: string, password: string) => {
   const fecthLogin = fetch(`${request}/login`, {
