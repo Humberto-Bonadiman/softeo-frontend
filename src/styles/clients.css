@@ -16,6 +16,13 @@
   height: 50px;
 }
 
+.values {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+}
+
 @media screen and (max-width: 600px) {
   .below-header {
     flex-direction: column;
@@ -34,5 +41,11 @@
     justify-content: space-evenly;
     margin: 5px;
     padding: 5px 0px;
+  }
+
+  .values {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   }
 }

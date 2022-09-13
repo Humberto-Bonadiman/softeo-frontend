@@ -133,9 +133,11 @@ const Clients = () => {
         </Form>
       </div>
       <TableClients />
-      <p>Valor total: {totalValue}</p>
-      { show && VALUE_MONTH }
-      { show && VALUE_PERIOD }
+      <div className="values">
+        <p>Valor total: {totalValue}</p>
+        { show && VALUE_MONTH }
+        { show && VALUE_PERIOD }
+      </div>
     </div>
   );
 };
