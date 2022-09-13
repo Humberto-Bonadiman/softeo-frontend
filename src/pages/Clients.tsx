@@ -1,41 +1,45 @@
 import { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { fetchApiShowClientByDentistId } from '../services/fetchApi';
+import { Link } from 'react-router-dom';
+import { fetchApiShowClientByDentistId, fetchApiFindClientById } from '../services/fetchApi';
 import { DentistContext } from '../context/DentistContext';
 import Header from '../components/Header';
 import { VscEdit, VscTrash } from 'react-icons/vsc';
 
 const Clients = () => {
-  const navigate = useNavigate();
-  const { setClients, clients } = useContext(DentistContext);
+  const { setAllClients, allClients, setOneClient } = useContext(DentistContext);
 
   const getClientsByDentist = async () => {
     const value = localStorage.getItem('token');
     if (typeof value === 'string') {
       const parse = JSON.parse(value);
+      console.log(parse);
       if (parse) {
         const response = await fetchApiShowClientByDentistId(parse);
+        console.log(response);
         const data = await response.json();
         console.log(data);
-        setClients(data);
+        setAllClients(data);
       }
     }
+  };
+
+  const editUser = async (id: string) => {
+    const value = localStorage.getItem('token') || '';
+    const result = await fetchApiFindClientById(id, value.substring(1, value.length-1));
+    const data = await result.json();
+    console.log(data);
+    setOneClient(data);
   };
 
 /*   const deleteClient = (id: string) => {
     removeExpenses(id);
   } */
 
-  const editClient = (id: string) => {
+  const linkClient = (id: string) => {
     return (
-      <button
-        data-testid="edit-btn"
-        onClick={ () => navigate(`/clients/edit/${id}`) }
-        type="button"
-        className="btn-edit-table btn"
-      >
+      <Link to={ `/clients/edit/${id}` } onClick={ () => editUser(id)}>
         <VscEdit className="btn-image" color="white" />
-      </button>
+      </Link>
     );
   }
 
@@ -63,7 +67,7 @@ const Clients = () => {
             </tr>
           </thead>
           <tbody>
-          {clients.map(({ id, name, treatment, date, value, numberPlots, valuePlots }, index) => (
+          {allClients.map(({ id, name, treatment, date, value, numberPlots, valuePlots }, index) => (
             <tr key={index}>
               <th>{id}</th>
               <td>{name}</td>
@@ -72,7 +76,9 @@ const Clients = () => {
               <td>{value}</td>
               <td>{numberPlots}</td>
               <td>{valuePlots}</td>
-              <td>{editClient(id)} / <VscTrash className="btn-image" color="white" /></td>
+              <td>
+                {linkClient(id)} / <VscTrash className="btn-image" color="white" />
+              </td>
             </tr>
           ))}
         </tbody>

@@ -48,3 +48,16 @@ export const fetchApiShowClientByDentistId = async (token: string) => {
   const response = await fetchShowClientByDentistId;
   return response;
 };
+
+export const fetchApiFindClientById = async (id: string, token: string) => {
+  const fetchFindClientById = fetch(`${request}/client/${id}`, {
+    method: 'GET',
+    headers: {
+      Accept: appJson,
+      'Content-Type': appJson,
+      Authorization: token,
+    },
+  });
+  const response = await fetchFindClientById;
+  return response;
+};

@@ -11,8 +11,10 @@ type DentistContextType = {
   setDentist: React.Dispatch<React.SetStateAction<IDentist>>;
   token: string;
   setToken: React.Dispatch<React.SetStateAction<string>>;
-  clients: IClients[];
-  setClients: React.Dispatch<React.SetStateAction<IClients[]>>;
+  oneClient: IClients;
+  setOneClient: React.Dispatch<React.SetStateAction<IClients>>;
+  allClients: IClients[];
+  setAllClients: React.Dispatch<React.SetStateAction<IClients[]>>;
 };
 
 const initialValue = {
@@ -22,7 +24,18 @@ const initialValue = {
   setDentist: () => {},
   token: '',
   setToken: () => {},
-  clients: [{
+  oneClient: {
+    id: '',
+    name: '',
+    treatment: '',
+    date: '',
+    value: '',
+    numberPlots: 0,
+    valuePlots: '',
+    dentistId: '',
+  },
+  setOneClient: () => {},
+  allClients: [{
     id: '',
     name: '',
     treatment: '',
@@ -32,7 +45,7 @@ const initialValue = {
     valuePlots: '',
     dentistId: '',
   }],
-  setClients: () => [{}],
+  setAllClients: () => [{}],
 };
 
 export const DentistContext = createContext<DentistContextType>(initialValue);
@@ -40,13 +53,16 @@ export const DentistContext = createContext<DentistContextType>(initialValue);
 export const DentistContextProvider = ({ children }: DentistContextProps) => {
   const [dentist, setDentist] = useState(initialValue.dentist);
   const [token, setToken] = useState(initialValue.token);
-  const [clients, setClients] = useState(initialValue.clients);
+  const [allClients, setAllClients] = useState(initialValue.allClients);
+  const [oneClient, setOneClient] = useState(initialValue.oneClient);
   return <DentistContext.Provider value={{
     dentist,
     setDentist,
     token,
     setToken,
-    clients,
-    setClients,
+    oneClient,
+    setOneClient,
+    allClients,
+    setAllClients,
   }}>{children}</DentistContext.Provider>;
 };
