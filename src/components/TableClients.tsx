@@ -8,6 +8,7 @@ import {
 } from '../services/fetchApi';
 import { Link } from 'react-router-dom';
 import { VscEdit, VscTrash } from 'react-icons/vsc';
+import '../styles/tableClients.css';
 
 const TableClients = () => {
   const { allClients, setOneClient, setAllClients } = useContext(DentistContext);
@@ -21,7 +22,6 @@ const TableClients = () => {
       setAllClients(data);
     };
   };
-
 
   const editUser = async (id: string) => {
     const result = await fetchApiFindClientById(id, token.substring(1, token.length-1));
@@ -44,7 +44,6 @@ const TableClients = () => {
           <div className='custom-ui'>
             <h3>Confirme para enviar a requisição</h3>
             <p>Você tem certeza que deseja deletar os dados do cliente?</p>
-            <button className="btn btn-primary" onClick={ onClose }>Não</button>
             <button
               className="btn btn-primary"
               onClick={ async () => {
@@ -58,6 +57,7 @@ const TableClients = () => {
             >
               Sim
             </button>
+            <button className="btn btn-primary" onClick={ onClose }>Não</button>
           </div>
         );
       }
@@ -75,37 +75,37 @@ const TableClients = () => {
 
   return(
     <div className="table-responsive">
-        <table className="table table-sm table-dark">
-          <thead>
-            <tr>
-              <th scope="col" data-testid="table-header-id">Id</th>
-              <th scope="col" data-testid="table-header-name">Nome</th>
-              <th scope="col" data-testid="table-header-email">Tratamento</th>
-              <th scope="col" data-testid="table-header-date">Data</th>
-              <th scope="col" data-testid="table-header-date">Valor</th>
-              <th scope="col" data-testid="table-header-date">Número de parcelas</th>
-              <th scope="col" data-testid="table-header-date">Valor das parcelas</th>
-              <th scope="col" data-testid="table-header-edit">Editar/Deletar</th>
+      <table className="table table-sm table-dark">
+        <thead>
+          <tr>
+            <th scope="col" data-testid="table-header-id">Id</th>
+            <th scope="col" data-testid="table-header-name">Nome</th>
+            <th scope="col" data-testid="table-header-email">Tratamento</th>
+            <th scope="col" data-testid="table-header-date">Data</th>
+            <th scope="col" data-testid="table-header-date">Valor</th>
+            <th scope="col" data-testid="table-header-date">Número de parcelas</th>
+            <th scope="col" data-testid="table-header-date">Valor das parcelas</th>
+            <th scope="col" data-testid="table-header-edit">Editar/Deletar</th>
+          </tr>
+        </thead>
+        <tbody>
+          {allClients.map(({ id, name, treatment, date, value, numberPlots, valuePlots }, index) => (
+            <tr key={index}>
+              <th>{id}</th>
+              <td>{name}</td>
+              <td>{treatment}</td>
+              <td>{date}</td>
+              <td>{value}</td>
+              <td>{numberPlots}</td>
+              <td>{valuePlots}</td>
+              <td>
+                {linkClient(id)} / {deleteButton(id, token)}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {allClients.map(({ id, name, treatment, date, value, numberPlots, valuePlots }, index) => (
-              <tr key={index}>
-                <th>{id}</th>
-                <td>{name}</td>
-                <td>{treatment}</td>
-                <td>{date}</td>
-                <td>{value}</td>
-                <td>{numberPlots}</td>
-                <td>{valuePlots}</td>
-                <td>
-                  {linkClient(id)} / {deleteButton(id, token)}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 };
 
