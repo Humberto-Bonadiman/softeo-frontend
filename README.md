@@ -3,6 +3,7 @@
 ## Descrição do projeto
 
 O desafio consistiu na criação de uma aplicação web para gerenciamento de uma lista de valores cobrados por uma odontologista. Nele é possível criar usuário, realizar login através do dentiste e a criar, atualizar dados, filtrar por data do procedimento e deletar o cliente. Este é o frontend da aplicação.
+A ideia de realizar cadastro na aplicação se deve a possibilidade de outras pessoas também poderem usar no futuro.
 
 ---
 
