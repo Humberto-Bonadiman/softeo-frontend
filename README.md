@@ -1,46 +1,48 @@
-# Getting Started with Create React App
+# Boas vindas ao repositório do projeto Softeo Frontend!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Descrição do projeto
 
-## Available Scripts
+O desafio consistiu na criação de uma aplicação web para gerenciamento de uma lista de valores cobrados por uma odontologista. Nele é possível criar usuário, realizar login através do dentiste e a criar, atualizar dados, filtrar por data do procedimento e deletar o cliente. Este é o frontend da aplicação.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Instalação do projeto localmente
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Após cada um dos passos, haverá um exemplo do comando a ser digitado para fazer o que está sendo pedido.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. Abra o terminal e crie um diretório no local de sua preferência com o comando **mkdir**:
+```javascript
+  mkdir projeto-humberto
+```
 
-### `npm test`
+2. Entre no diretório que acabou de criar e depois clone o projeto:
+```javascript
+  cd projeto-humberto
+  git clone git@github.com:Humberto-Bonadiman/softeo-frontend.git
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Acesse o diretório do projeto e depois utilize o comando **npm i** para instalar todas as dependências necessárias:
+```javascript
+  cd softeo-frontend
+  npm install
+```
 
-### `npm run build`
+4. Por último, rode o comando **npm start** e acesse o projeto via browser, no caminho `http://localhost:3000/`.
+```javascript
+  npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Heroku da aplicação
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Para visitar a aplicação no heroku basta acessar o link: https://softeo-frontend-humberto.herokuapp.com
+Para visitar o backend da aplicação no heroku basta acessar o link: https://softeo-backend-humberto.herokuapp.com
 
-### `npm run eject`
+Observação: Para acessar os dados do cliente pelo back-end é necessário o token que é gerado no momento do login.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+---
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Github da aplicação backend
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Link: https://github.com/Humberto-Bonadiman/softeo-backend
